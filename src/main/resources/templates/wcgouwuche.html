@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+  <meta name="keywords" content="admin, dashboard, bootstrap, template, flat, modern, theme, responsive, fluid, retina, backend, html5, css, css3">
+  <meta name="description" content="">
+  <meta name="author" content="ThemeBucket">
+  <link rel="shortcut icon" href="#" type="image/png">
+
+  <title>加入购物车成功 </title>
+
+  <!--icheck-->
+  <link href="js/iCheck/skins/minimal/minimal.css" rel="stylesheet">
+  <link href="js/iCheck/skins/square/square.css" rel="stylesheet">
+  <link href="js/iCheck/skins/square/red.css" rel="stylesheet">
+  <link href="js/iCheck/skins/square/blue.css" rel="stylesheet">
+
+  <!--dashboard calendar-->
+  <link href="css/clndr.css" rel="stylesheet">
+
+  <!--Morris Chart CSS -->
+  <link rel="stylesheet" href="js/morris-chart/morris.css">
+
+    <div th:include="common :: cheader"> </div>
+</head>
+
+<body class="sticky-header">
+
+<section>
+    <!-- left side start-->
+    <div th:replace="common :: #leftmenu"></div>
+    <!-- left side end-->
+    
+    <!-- main content start-->
+    <div class="main-content" >
+
+        <!-- header section start-->
+        <div th:replace="common :: headermenu"></div>
+        <!-- header section end-->
+
+        <!-- page heading start-->
+
+
+       <!-- <script>alert('1111')</script>-->
+        <div class="page-heading">
+
+
+        <div>
+            <!--search start-->
+            <form class="searchform" th:action="@{/search/food}" method="post">
+                <input type="text" class="form-control" name="keyword" placeholder="搜所" />
+                <button  class="btn btn-success" style="text-align:right" type="submit">搜所</button>
+            </form>
+            <!--search end-->
+        </div>
+
+            <!--body wrapper start-->
+        <div class="wrapper">
+            <div class="row">
+                <div class="col-md-6 col-sm-6" >
+                    <div class="panel">
+                        <div class="panel-body">
+                           <!-- <h4>Margarita Rose <span class="text-muted small"> - Graphics Designer</span></h4>-->
+                            <div class="media">
+                                <a class="pull-left" href="#">
+                                    <img class="thumb media-object"
+                                         th:src="@{/{picture}(picture=${food.picture})}" width="300" height="200" >
+                               </a>
+                                <div class="media-body">
+                                    <h1 style="color: green">加入购物车成功</h1>
+                                    <address>
+                                        <h3 style="color: #1dff58;">名字：[[${food.name}]]</h3>
+                                     <h5 style="color: #ff394c;">  价钱：  [[${food.price}]]</h5>
+                                     <h5 style="color: #ff394c;"> 数量：  [[${dOrder.fnumber}]]</h5>
+                                    <h5 style="color: #ff394c;" >总价钱为： [[${food.price}*${dOrder.fnumber}]]  </h5>
+
+                                            <a th:href="@{/gouwuche}"  class="btn spinner-down btn-warning">去购物车结算</a>
+                                    </address>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+
+            </div>
+
+        </div>
+        <!--body wrapper end-->
+
+        <!--footer section start-->
+
+        <!--footer section end-->
+
+    <!-- main content end-->
+
+</section>
+
+<!-- Placed js at the end of the document so the pages load faster -->
+<div th:include="common :: #cscript"></div>
+<!--spinner-->
+<script type="text/javascript" src="js/fuelux/js/spinner.min.js"></script>
+<script src="js/spinner-init.js"></script>
+<!--easy pie chart-->
+<script src="js/easypiechart/jquery.easypiechart.js"></script>
+<script src="js/easypiechart/easypiechart-init.js"></script>
+
+<!--Sparkline Chart-->
+<script src="js/sparkline/jquery.sparkline.js"></script>
+<script src="js/sparkline/sparkline-init.js"></script>
+
+<!--icheck -->
+<script src="js/iCheck/jquery.icheck.js"></script>
+<script src="js/icheck-init.js"></script>
+
+<!-- jQuery Flot Chart-->
+<script src="js/flot-chart/jquery.flot.js"></script>
+<script src="js/flot-chart/jquery.flot.tooltip.js"></script>
+<script src="js/flot-chart/jquery.flot.resize.js"></script>
+
+
+<!--Morris Chart-->
+<script src="js/morris-chart/morris.js"></script>
+<script src="js/morris-chart/raphael-min.js"></script>
+
+<!--Calendar-->
+<script src="js/calendar/clndr.js"></script>
+<script src="js/calendar/evnt.calendar.init.js"></script>
+<script src="js/calendar/moment-2.2.1.js"></script>
+<script src="http://cdnjs.cloudflare.com/ajax/libs/underscore.js/1.5.2/underscore-min.js"></script>
+
+
+
+<!--Dashboard Charts-->
+<script src="js/dashboard-chart-init.js"></script>
+
+
+</body>
+</html>

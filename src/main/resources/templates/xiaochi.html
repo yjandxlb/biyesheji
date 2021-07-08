@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+  <meta name="keywords" content="admin, dashboard, bootstrap, template, flat, modern, theme, responsive, fluid, retina, backend, html5, css, css3">
+  <meta name="description" content="">
+  <meta name="author" content="ThemeBucket">
+  <link rel="shortcut icon" href="#" type="image/png">
+
+  <title> 小吃</title>
+
+  <!--icheck-->
+  <link href="js/iCheck/skins/minimal/minimal.css" rel="stylesheet">
+  <link href="js/iCheck/skins/square/square.css" rel="stylesheet">
+  <link href="js/iCheck/skins/square/red.css" rel="stylesheet">
+  <link href="js/iCheck/skins/square/blue.css" rel="stylesheet">
+
+  <!--dashboard calendar-->
+  <link href="css/clndr.css" rel="stylesheet">
+
+  <!--Morris Chart CSS -->
+  <link rel="stylesheet" href="js/morris-chart/morris.css">
+
+    <div th:include="common :: cheader"> </div>
+</head>
+
+<body class="sticky-header">
+
+<section>
+    <!-- left side start-->
+    <div th:replace="common :: #leftmenu"></div>
+    <!-- left side end-->
+    
+    <!-- main content start-->
+    <div class="main-content" >
+
+        <!-- header section start-->
+        <div th:replace="common :: headermenu"></div>
+        <!-- header section end-->
+
+        <!-- page heading start-->
+        <div class="page-heading">
+            <h2>
+                小吃
+            </h2>
+
+        </div>
+        <!-- page heading end-->
+
+
+        <!--body wrapper start-->
+        <div>
+            <!--search start-->
+            <form class="searchform" th:action="@{/search/food}" method="post">
+                <input type="text" class="form-control" name="keyword" placeholder="搜索" />
+                <button  class="btn btn-success" style="text-align:right" type="submit">搜索</button>
+            </form>
+            <!--search end-->
+
+        </div>
+        <div class="wrapper">
+            <div class="row">
+                <h1  style="color: yellowgreen;text-align: center"> 小吃</h1>
+
+                           <!-- <img th:each="foods: ${food1}" src="images/zhucai1/daxia.jpg" width="492" align="420" alt=""/>-->
+                           <!-- <img th:each="food: ${food1}"
+                                 th:src="@{/images/zhucai1/{picture}(picture=${food.picture})}"
+                                 th:text="${food.name}"
+                                 width="450" align="420" alt=""/>-->
+
+                <div class="col-md-6 col-sm-6" th:each="food: ${xiaochi}">
+                    <div class="panel">
+                        <div class="panel-body">
+                           <!-- <h4>Margarita Rose <span class="text-muted small"> - Graphics Designer</span></h4>-->
+                            <div class="media">
+                                <a class="pull-left" href="#">
+                                    <img class="thumb media-object"
+                                         th:src="@{/{picture}(picture=${food.picture})}" width="300" height="200" >
+                               </a>
+                                <div class="media-body">
+                                    <address>
+                                        <h3 style="color: #1dff58;">名字：[[${food.name}]]</h3>
+                                     <h5 style="color: #ff394c;">  价钱：  [[${food.price}]]</h5>
+                                        <h5 style="color: rgba(30,21,27,0.91);">   描述： [[${food.des}]] </h5>
+                        <form action="#" method="post">
+                                        <div class="form-group ">
+                                            <div class="col-md-9">
+                                                <div id="spinner4" th:class="spinner4">
+                                                    <div class="input-group" style="width:150px;">
+                                                        <div class="spinner-buttons input-group-btn">
+                                                            <button th:if="!${session.loginUser.adm}" type="button" class="btn spinner-up btn-primary">
+                                                                <i class="fa fa-plus" ></i>
+                                                            </button>
+                                                        </div>
+                                                        <input type="text" th:name="fid" th:value="${food.fid}" th:type="hidden"   >
+                                                        <input type="text" th:name="fname" th:value="${food.name}" th:type="hidden"   >
+
+
+                                                        <input type="text" th:name="uid" th:value="${session.loginUser.uid}" th:type="hidden" >
+                                                        <input type="text" th:name="username" th:value="${session.loginUser.username}" th:type="hidden" >
+
+
+                                                        <input type="text" id="fnumber" th:name="fnumber" class="spinner-input form-control"  maxlength="3" readonly>
+
+                                                        <div class="spinner-buttons input-group-btn">
+                                                            <button th:if="!${session.loginUser.adm}" type="button" class="btn spinner-down btn-warning">
+                                                                <i class="fa fa-minus"></i>
+                                                            </button>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                            <br><br><br>
+                                            <input th:if="!${session.loginUser.adm}" formaction="/gouwuche"   type="submit" value="加入购物车" class="btn spinner-down btn-warning">
+
+                                            <input th:if="!${session.loginUser.adm}" formaction="/goumai"  type="submit"  value="购买" class="btn spinner-down btn-warning">
+                                            <a th:if="${session.loginUser.adm}" type="submit"
+                                               th:href="@{/updatefood(fid=${food.fid})}" class="btn btn-success">修改信息</a>
+
+                                            <a th:if="${session.loginUser.adm}" type="submit"
+                                               th:href="@{/deletefood(fid=${food.fid})}" class="btn btn-danger">删除</a>
+                                         </form>
+                                    </address>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+
+
+            </div>
+
+        </div>
+        <!--body wrapper end-->
+
+        <!--footer section start-->
+
+        <!--footer section end-->
+
+    <!-- main content end-->
+</section>
+
+<!-- Placed js at the end of the document so the pages load faster -->
+<div th:include="common :: #cscript"></div>
+
+<script type="text/javascript" src="js/fuelux/js/spinner.min.js"></script>
+<script src="js/spinner-init.js"></script>
+<!--easy pie chart-->
+<script src="js/easypiechart/jquery.easypiechart.js"></script>
+<script src="js/easypiechart/easypiechart-init.js"></script>
+
+<!--Sparkline Chart-->
+<script src="js/sparkline/jquery.sparkline.js"></script>
+<script src="js/sparkline/sparkline-init.js"></script>
+
+<!--icheck -->
+<script src="js/iCheck/jquery.icheck.js"></script>
+<script src="js/icheck-init.js"></script>
+
+<!-- jQuery Flot Chart-->
+<script src="js/flot-chart/jquery.flot.js"></script>
+<script src="js/flot-chart/jquery.flot.tooltip.js"></script>
+<script src="js/flot-chart/jquery.flot.resize.js"></script>
+
+
+<!--Morris Chart-->
+<script src="js/morris-chart/morris.js"></script>
+<script src="js/morris-chart/raphael-min.js"></script>
+
+<!--Calendar-->
+<script src="js/calendar/clndr.js"></script>
+<script src="js/calendar/evnt.calendar.init.js"></script>
+<script src="js/calendar/moment-2.2.1.js"></script>
+<script src="http://cdnjs.cloudflare.com/ajax/libs/underscore.js/1.5.2/underscore-min.js"></script>
+
+
+
+<!--Dashboard Charts-->
+<script src="js/dashboard-chart-init.js"></script>
+
+
+</body>
+</html>

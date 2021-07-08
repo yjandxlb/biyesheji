@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+    <meta name="description" content="">
+    <meta name="author" content="ThemeBucket">
+    <link rel="shortcut icon" href="#" type="image/png">
+
+    <title>修改</title>
+
+    <link th:href="@{/css/style.css}" rel="stylesheet">
+    <link th:href="@{/css/style-responsive.css}" rel="stylesheet">
+
+    <!-- HTML5 shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!--[if lt IE 9]>
+    <script th:src="@{/js/html5shiv.js}"></script>
+    <script th:src="@{/js/respond.min.js}"></script>
+    <![endif]-->
+
+    <script>
+        window.onload=function (ev) {
+           document.getElementById("name").onblur=function () {
+               var a= $(this).val();
+                var b=$("#fid").val();
+                var s=$("#s_name");
+                $.get("/upfood",{name:a,fid:b},function (data) {
+                    if(data.exist){
+                       s.html("食物以存在,原食物名("+data.name+")");
+                       s.css("color","red")
+                    }
+
+                    else if(a==data.name){
+                        $("#s_name").html("");
+                        s.css("color","green")
+                    }
+                    else{
+                        $("#s_name").html("");
+                        s.html("原食物名("+data.name+")");
+                        s.css("color","green")
+                    }
+                },"json")
+            }
+        }
+    </script>
+</head>
+
+<body class="login-body">
+
+<div class="container">
+
+    <form class="form-signin"  th:action="@{/updatefood}" method="post" enctype="multipart/form-data">
+        <div class="form-signin-heading text-center">
+            <h1 class="sign-title">修改菜品信息</h1>
+            <img th:src="@{/images/login-logo.png}" alt=""/>
+        </div>
+
+        <div class="login-wrap">
+            <p > 修改菜品信息</p>
+            <!--  <input type="text" autofocus="" placeholder="Full Name" class="form-control">
+              <input type="text" autofocus="" placeholder="Address" class="form-control">-->
+           <!-- <div class="form-group">
+                <label for="exampleInputEmail1">菜品种类</label>
+                <input class="form-control"  name="vid" id="exampleInputEmail1" th:value="${food.vid}">
+                <p>注：1为主菜   2为小菜或者饮料</p>
+            </div>-->
+            <label style="color: red" th:text="${msg}"></label>
+            <div class="form-group">
+                <input  class="form-control" type="hidden" name="fid"  th:value="${food.fid}">
+                <label for="name">菜品名称</label>
+                <input  class="form-control" id="name" name="name"  th:value="${food.name}">
+                <span id="s_name"></span>
+
+            </div> <div class="form-group">
+                <label for="price">菜品价格</label>
+                <input  class="form-control" name="price" id="price" th:value="${food.price}">
+            </div>
+            <input   name="price1"  type="hidden" th:value="${food.price}">
+            <input  name="picture"  th:value="${food.picture}" type="hidden">
+            <input  name="fid"  id="fid" th:value="${food.fid}" type="hidden">
+            <input  name="vid"  th:value="${food.vid}" type="hidden">
+            <input  name="name1"  th:value="${food.name}" type="hidden">
+             <div class="form-group">
+                <label for="des">详细描述</label>
+                <input  class="form-control" name="des" id="des" th:value="${food.des}">
+            </div>
+            <div class="form-group">
+                <label for="test">选择图片</label>
+                <img th:src="@{'/'+${food.picture}}" width="300" height="200">
+                <input type="file" name="file"  multiple id="test">
+            </div>
+            <button type="submit" class="btn btn-primary" id="btn">完成</button>
+
+
+        </div>
+
+    </form>
+
+</div>
+
+<!--<script>
+    $(function () {
+        $("#btn").click(function () {
+            var formData = {};
+            formData = new FormData();
+            var this_1=  document.getElementById('test');
+            var files = this_1.files;
+
+            for (var i = 0, len = files.length; i < len; i++) {
+                formData.append('uploadFile', files[i]);
+            }
+            jQuery.ajax({
+                type: 'post',
+                url: "/updatefood",
+                data: formData,
+                contentType: false,
+                processData: false,
+                success: function (data) {
+                },
+                error: function () {
+                }
+            })
+        })
+
+    })
+</script>-->
+
+<!-- Placed js at the end of the document so the pages load faster -->
+
+<!-- Placed js at the end of the document so the pages load faster -->
+<script th:src="@{/js/jquery-1.10.2.min.js}"></script>
+<script th:src="@{/js/bootstrap.min.js}"></script>
+<script th:src="@{/js/modernizr.min.js}"></script>
+
+</body>
+</html>

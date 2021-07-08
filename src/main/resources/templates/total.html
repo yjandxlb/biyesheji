@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+<meta name="description" content="">
+<meta name="author" content="ThemeBucket">
+<link rel="shortcut icon" href="#" type="image/png">
+
+<title>销售情况</title>
+
+
+<!--data table-->
+<link rel="stylesheet" href="js/data-tables/DT_bootstrap.css"/>
+
+<div th:include="common :: cheader"></div>
+</head>
+
+<body class="sticky-header">
+
+<section>
+    <!-- left side start-->
+    <div th:replace="common :: #leftmenu"></div>
+    <!-- left side end-->
+
+    <!-- main content start-->
+    <div class="main-content">
+
+        <div th:replace="common :: headermenu"></div>
+
+        <!-- page heading start-->
+
+        <!-- page heading end-->
+            <!--search start-->
+            <form  th:action="@{/total}" method="get">
+                <label >日期:</label>
+                <input  type="text"  name="kdate"   />
+                <button  class="btn btn-success" style="text-align:right" type="submit">搜所</button>
+            </form>
+            <!--search end-->
+        <h1>今天销售总价钱:[[${tprice}]]</h1>
+        <h1>今天销售食物情况</h1>
+
+        <h1 th:each="t : ${totals}">
+            <span >食物：[[${t.fname}]]</span>
+            <span >数量：[[${t.total}]]</span>
+        </h1>
+
+    </div>
+    <!-- main content end-->
+</section>
+
+<!-- Placed js at the end of the document so the pages load faster -->
+<div th:include="common :: #cscript"></div>
+
+<!--data table-->
+<script type="text/javascript" src="js/data-tables/jquery.dataTables.js"></script>
+<script type="text/javascript" src="js/data-tables/DT_bootstrap.js"></script>
+
+
+<!--script for editable table-->
+<script src="js/editable-table.js"></script>
+
+<!-- END JAVASCRIPTS -->
+<!--<script>
+    jQuery(document).ready(function() {
+        EditableTable.init();
+    });
+</script-->>
+
+</body>
+</html>

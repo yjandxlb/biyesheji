@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>webSocket</title>
+</head>
+<body>
+<div>
+    <h2>Socket 网络实时交互测试</h2>
+    <div>
+        <button id="connect" onclick="connect();">建立连接</button>
+        <button id="disconnect" disabled="disabled" onclick="disconnect();">断开连接</button>
+
+    </div>
+    <div id="conversationDiv">
+        <label>What is your name?</label>
+        <input type="text" id="name" />
+        <button id="sendName" onclick="sendName();">Send</button>
+        <p id="response"></p>
+    </div>
+</div>
+</body>
+<script src="http://cdn.bootcss.com/sockjs-client/1.1.1/sockjs.min.js"></script>
+<script src="http://cdn.bootcss.com/stomp.js/2.3.3/stomp.js"></script>
+<script src="http://cdn.bootcss.com/jquery/3.1.1/jquery.min.js"></script>
+<script type="text/javascript">
+    var stompClient = null;
+
+    $(function(){
+        connect();
+    });
+
+    function setConnected(connected) {
+
+        $("#connect").attr("disabled", connected);
+        $("#disconnect").attr("disabled", !connected);
+        if (connected) {
+            $("#conversationDiv").show();
+        }else{
+            $("#conversationDiv").hide();
+        }
+        $("#response").html("");
+    }
+
+    //this line.
+    function connect() {
+
+        var socket = new SockJS("/testSocket");
+
+        stompClient = Stomp.over(socket);
+
+        stompClient.connect({}, function(frame) {
+
+            setConnected(true);
+            console.log('Connected: ' + frame);
+            stompClient.subscribe("/topic/main", function(frame){
+             /* showGreeting(JSON.parse(frame.body).content);*/
+                console.info(frame);
+                showGreeting(frame.body);
+            });
+        });
+    }
+
+    function sendName() {
+        var name = $("#name").val();
+        stompClient.send("/app/test", {}, name);
+    }
+
+    function disconnect() {
+        if (stompClient != null) {
+            stompClient.disconnect();
+        }
+        setConnected(false);
+        console.log("Disconnected");
+    }
+
+    function showGreeting(message) {
+        $("#response").append("<tr><td>" + message + "</td></tr>");
+    }
+</script>
+</html>

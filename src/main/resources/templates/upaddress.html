@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+    <meta name="description" content="">
+    <meta name="author" content="ThemeBucket">
+    <link rel="shortcut icon" href="#" type="image/png">
+
+    <title>修改地址</title>
+
+
+    <link th:href="@{/css/style.css}" rel="stylesheet">
+    <link th:href="@{/css/style-responsive.css}" rel="stylesheet">
+
+    <!-- HTML5 shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!--[if lt IE 9]>
+    <script th:src="@{/js/html5shiv.js}"></script>
+    <script th:src="@{/js/respond.min.js}"></script>
+    <![endif]-->
+</head>
+
+<body class="login-body">
+
+<div class="container">
+
+    <form class="form-signin" action="index.html" th:action="@{/address/update(aid=${aid})}" method="post">
+        <div class="form-signin-heading text-center">
+            <h1 class="sign-title">修改地址</h1>
+            <img th:src="@{/images/login-logo.png}" alt=""/>
+        </div>
+
+        <div class="login-wrap">
+          <!--  <input type="text" autofocus="" placeholder="Full Name" class="form-control">
+            <input type="text" autofocus="" placeholder="Address" class="form-control">-->
+
+            <!--<p> Enter your account details below</p>-->
+
+            <label for="address">地址</label>
+            <input type="text" name="address" id="address" th:value="${address.address}"  class="form-control">
+
+            <label for="name">姓名</label>
+            <input type="text" name="name"  id="name" th:value="${address.name}" class="form-control">
+            <label for="telphone">手机号</label>
+            <input type="text" name="telphone" id="telphone" th:value="${address.telphone}"class="form-control">
+            <!--<input type="password"  name="password" placeholder="再次输入密码" class="form-control">-->
+            <!--<input type="password"  name="password" placeholder="再次输入密码" class="form-control">-->
+            <button type="submit" class="btn btn-lg btn-login btn-block">
+               完成 <i class="fa fa-check"></i>
+            </button>
+
+        </div>
+
+    </form>
+
+</div>
+
+
+
+<!-- Placed js at the end of the document so the pages load faster -->
+
+<!-- Placed js at the end of the document so the pages load faster -->
+<script th:src="@{/js/jquery-1.10.2.min.js}"></script>
+<script th:src="@{/js/bootstrap.min.js}"></script>
+<script th:src="@{/js/modernizr.min.js}"></script>
+
+</body>
+</html>

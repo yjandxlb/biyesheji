@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+    <meta name="description" content="">
+    <meta name="author" content="ThemeBucket">
+    <link rel="shortcut icon" href="#" type="image/png">
+
+
+    <title>登录</title>
+
+    <link href="css/style.css" rel="stylesheet">
+    <link href="css/style-responsive.css" rel="stylesheet">
+
+    <!-- HTML5 shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!--[if lt IE 9]>
+    <script src="js/html5shiv.js"></script>
+    <script src="js/respond.min.js"></script>
+
+     <![endif]-->
+    <script th:src="@{/js/jquery-1.10.2.min.js}"></script>
+    <script src="https://ssl.captcha.qq.com/TCaptcha.js"></script>
+</head>
+<script>
+    var check=false;
+    window.callback = function(res){
+
+        console.log(res)
+// res（用户主动关闭验证码）= {ret: 2, ticket: null}
+// res（验证成功） = {ret: 0, ticket: "String", randstr: "String"}
+        if(res.ret == 0){
+            $.post("/yz",{ticket:res.ticket,randstr:res.randstr},function (data) {
+
+                if(data.trim){
+                    check=true;
+                    $("#s_yz").html("验证成功");
+                    $("#s_yz").css("color","green")
+
+                }
+                else{
+                    $("#s_yz").html("验证失败");
+                    $("#s_yz").css("color","red")
+                }
+            })
+
+        }
+    }
+    function login() {
+
+        $("#s_yz").html("");
+        if (check){
+           $("#loginForm").submit();
+        }
+        else {
+            $("#s_yz").html("请先验证");
+            $("#s_yz").css("color","red")
+        }
+    }
+</script>
+<body class="login-body">
+
+<div class="container">
+
+    <form class="form-signin" id="loginForm" action="index.html" th:action="@{/login}"  method="post">
+        <div class="form-signin-heading text-center">
+            <h1 class="sign-title">登录</h1>
+            <img src="images/login-logo.png" alt=""/>
+        </div>
+
+        <div class="login-wrap">
+            <label style="color: red" th:text="${msg}"></label>
+            <input type="text" name="username" class="form-control" placeholder="用户名" autofocus>
+            <input type="password" name="password" class="form-control" placeholder="密码">
+
+            <button id="TencentCaptcha"
+                    data-appid="2011903066 "
+                    data-cbfn="callback"
+                    type="button"
+            >验证</button>
+            <span id="s_yz"></span><br>
+
+            <button class="btn btn-lg btn-login btn-block" onclick="login()"  type="button">
+                <i class="fa fa-check"></i>
+            </button>
+
+
+
+
+            <div class="registration">
+                忘记密码？<a class="" th:href="@{/forget.html}">找回密码</a>
+                <br>
+               还没有用户吗？
+                <a class="" th:href="@{/registration}">
+                   注册
+                </a>
+            </div>
+            <!--<label class="checkbox">
+                <input type="checkbox" value="remember-me"> Remember me
+                <span class="pull-right">
+                    <a data-toggle="modal" href="#myModal"> Forgot Password?</a>
+
+                </span>
+            </label>-->
+
+        </div>
+
+        <!-- Modal -->
+       <!-- <div aria-hidden="true" aria-labelledby="myModalLabel" role="dialog" tabindex="-1" id="myModal" class="modal fade">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                        <h4 class="modal-title">Forgot Password ?</h4>
+                    </div>
+                    <div class="modal-body">
+                        <p>Enter your e-mail address below to reset your password.</p>
+                        <input type="text" name="email" placeholder="Email" autocomplete="off" class="form-control placeholder-no-fix">
+
+                    </div>
+                    <div class="modal-footer">
+                        <button data-dismiss="modal" class="btn btn-default" type="button">Cancel</button>
+                        <button class="btn btn-primary" type="button">Submit</button>
+                    </div>
+                </div>
+            </div>
+        </div>-->
+        <!-- modal -->
+
+    </form>
+
+</div>
+
+
+
+<!-- Placed js at the end of the document so the pages load faster -->
+
+<!-- Placed js at the end of the document so the pages load faster -->
+<script src="js/jquery-1.10.2.min.js"></script>
+<script src="js/bootstrap.min.js"></script>
+<script src="js/modernizr.min.js"></script>
+
+</body>
+</html>

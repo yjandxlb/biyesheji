@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>聊天</title>
+</head>
+<body>
+<div>
+
+    <div id="conversationDiv">
+        <label>发送消息</label>
+        <input type="hidden" th:id="name" th:value="${username}">
+        <input type="hidden" th:id="adm" th:value="${session.loginUser.adm}">
+        <input type="text" id="mes"  />
+        <button id="sendName" th:if="!${session.loginUser.adm}" onclick="sendName();">发送消息</button>
+        <button id="sendName1" th:if="${session.loginUser.adm}" onclick="sendName1();">发送消息</button><br>
+        <h1 >用户[[${username}]] &nbsp;&nbsp&nbsp;&nbsp&nbsp;&nbsp&nbsp;&nbsp &nbsp;&nbsp&nbsp;&nbsp&nbsp;&nbsp&nbsp;&nbsp&nbsp;&nbsp商家</h1>
+
+        <p id="response"></p>
+
+
+    </div>
+</div>
+</body>
+<script src="http://cdn.bootcss.com/sockjs-client/1.1.1/sockjs.min.js"></script>
+<script src="http://cdn.bootcss.com/stomp.js/2.3.3/stomp.js"></script>
+<script src="http://cdn.bootcss.com/jquery/3.1.1/jquery.min.js"></script>
+<script type="text/javascript">
+    var stompClient = null;
+
+    $(function(){
+        connect();
+    });
+
+    function setConnected(connected) {
+
+        $("#connect").attr("disabled", connected);
+        $("#disconnect").attr("disabled", !connected);
+        if (connected) {
+            $("#conversationDiv").show();
+        }else{
+            $("#conversationDiv").hide();
+        }
+        $("#response").html("");
+    }
+
+    //this line.
+    function connect() {
+        var name= $("#name").val();
+        var socket = new SockJS("/testSocket");
+
+        stompClient = Stomp.over(socket);
+        if($("#adm").val()==1){
+            stompClient.connect({}, function(frame) {
+
+                setConnected(true);
+                console.log('Connected: ' + frame);
+                stompClient.subscribe("/topic/main", function(frame){
+                    /* showGreeting(JSON.parse(frame.body).content);*/
+                    console.info(frame);
+                    showGreeting(frame.body);
+                });
+            });
+
+        }
+    else {
+            stompClient.connect({}, function (frame) {
+
+                setConnected(true);
+                console.log('Connected: ' + frame);
+                stompClient.subscribe("/topic/test/" + name, function (frame) {
+                    /* showGreeting(JSON.parse(frame.body).content);*/
+                    console.info(frame);
+                    showGreeting(frame.body);
+                });
+            });
+        }
+    }
+
+    function sendName() {
+        var name= $("#name").val();
+        var mes = $("#mes").val();
+
+        stompClient.send("/app/test/"+name, {}, mes);
+    }
+    function sendName1() {
+        var name= $("#name").val();
+        var mes = $("#mes").val();
+
+        stompClient.send("/app/test1/"+name, {}, mes);
+    }
+
+    function disconnect() {
+        if (stompClient != null) {
+            stompClient.disconnect();
+        }
+        setConnected(false);
+        console.log("Disconnected");
+    }
+
+    function showGreeting(message) {
+
+        $("#response").append("<tr><td>" + message + "</td></tr>");
+
+
+    }
+</script>
+</html>

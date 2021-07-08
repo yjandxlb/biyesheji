@@ -1,0 +1,220 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+<meta name="description" content="">
+<meta name="author" content="ThemeBucket">
+<link rel="shortcut icon" href="#" type="image/png">
+
+<title>已完成订单</title>
+
+
+<!--data table-->
+<link rel="stylesheet" href="js/data-tables/DT_bootstrap.css"/>
+
+<div th:include="common :: cheader"></div>
+</head>
+
+<body class="sticky-header">
+
+<section>
+    <!-- left side start-->
+    <div th:replace="common :: #leftmenu"></div>
+    <!-- left side end-->
+
+    <!-- main content start-->
+    <div class="main-content">
+
+        <div th:replace="common :: headermenu"></div>
+
+        <!-- page heading start-->
+        <div class="page-heading">
+            <h2>
+               已完成订单
+            </h2>
+        </div>
+        <!-- page heading end-->
+            <!--search start-->
+            <form  th:action="@{/order}" method="get">
+                <label th:if="${session.loginUser.adm}" >消费者:</label>
+                <input th:if="${session.loginUser.adm}" type="text"
+                       name="kname"   />
+                <label >订单号:</label>
+                <input  type="text"  name="koid"   />
+                <label >日期:</label>
+                <input  type="text"  name="kdate"   />
+                <button  class="btn btn-success" style="text-align:right" type="submit">搜所</button>
+            </form>
+            <!--search end-->
+
+
+        <!--body wrapper start-->
+        <form th:action="@{/zhifu}" method="post" >
+        <div class="wrapper">
+            <div class="row">
+                <div class="col-sm-12">
+                    <section class="panel">
+                        <header class="panel-heading">
+
+                    <span class="tools pull-right">
+                        <a href="javascript:;" class="fa fa-chevron-down"></a>
+                        <a href="javascript:;" class="fa fa-times"></a>
+                     </span>
+                        </header>
+                        <div class="panel-body">
+                            <div class="adv-table editable-table ">
+                                <div class="clearfix">
+                                </div>
+                                <div class="space15"></div>
+                                <table id="tq" class="table table-striped table-hover table-bordered" >
+                                    <thead>
+                                    <tr>
+
+                                        <th>订单号</th>
+                                        <th>地址</th>
+                                        <th>收货人</th>
+                                        <th>电话号码</th>
+                                        <th th:if="${session.loginUser.adm}">消费者</th>
+                                        <th>日期</th>
+                                        <th>总价</th>
+                                        <th>查看详情</th>
+                                        <th>删除</th>
+                                    </tr>
+                                    </thead>
+
+                                    <tbody>
+                                    <tr th:each="order,stats:${orders.records}" class="">
+
+                                        <td th:text="${order.oid}"></td>
+                                        <td th:text="${order.address}"></td>
+                                        <td th:text="${order.name}"></td>
+                                        <td th:text="${order.telphone}"></td>
+                                        <td th:if="${session.loginUser.adm}" th:text="${order.username}"></td>
+                                        <td th:text="${order.odate}" ></td>
+
+                                        <td th:text="${order.tprice}" ></td>
+                                        <td> <a th:href="@{/desorder(oid=${order.getOid()})}"> 查看详情</a></td>
+                                        <td>
+                                            <a th:href="@{/order/delete/{oid}(oid=${order.oid},page=${orders.current},
+                                            kname=${kname},kdate=${kdate},
+                                                    koid=${koid})}"
+                                               class="btn btn-danger" type="button">删除</a>
+                                        </td>
+                                    </tr>
+                                    </tbody>
+                                </table>
+                                <div class="row">
+                                    <div class="col-lg-6">
+                                        <div class="dataTables_info" id="editable-sample_info">
+                                            当前第[[${orders.current}]]页 总计 [[${orders.pages}]] 页
+                                            共 [[${orders.total}]]记录
+                                        </div>
+                                    </div>
+                                    <div class="col-lg-6">
+                                        <div class="dataTables_paginate paging_bootstrap pagination">
+                                            <ul >
+
+                                                <li class="prev disabled"
+                                                    th:class="${orders.current==1?'prev disabled':''}" >
+                                                    <a
+                                                       th:href="@{/order(page=(${orders.current==1?1:(orders.current)-1}),
+                                                       kname=${kname},kdate=${kdate},
+                                                    koid=${koid})}">
+                                                         上一页</a></li>
+                                                <li th:class="${number==orders.current?'active':''}"
+                                                    th:each="number:${#numbers.sequence(1,orders.pages)}"
+                                                    ><a  th:href="@{/order(page=${number},kname=${kname},kdate=${kdate},
+                                                    koid=${koid})}">
+                                                    [[${number}]]</a></li>
+                                                <li class="next"
+                                                    th:class="${orders.current==orders.pages?'prev disabled':'next'}"><a
+                                                       class="aa"     th:href="
+                                                @{/order(page=${orders.current==orders.pages?orders.current:(orders.current)+1
+                                                },kname=${kname},kdate=${kdate},
+                                                    koid=${koid})}">
+                                                    下一页 </a></li>
+                                            </ul>
+                                        </div>
+                                    </div>
+                                </div>
+
+                            </div>
+                        </div>
+                    </section>
+                </div>
+            </div>
+        </div>
+        </form>
+        <!--body wrapper end-->
+       <!-- <script>var item =["1","a"];  document.getElementById('s1').value = item;</script>-->
+        <!--footer section start-->
+
+        <!--footer section end-->
+
+
+    </div>
+    <!-- main content end-->
+</section>
+
+<!-- Placed js at the end of the document so the pages load faster -->
+<div th:include="common :: #cscript"></div>
+<script>
+    window.onload=function () {
+        var b = [];
+        document.getElementById("aa").onmousedown=function () {
+
+            var k = 0;
+            var a = document.getElementsByName("orders");
+            for (var i = 0; i < a.length; i++) {
+                if (a[i].checked) {
+                    b.push(a[i].value);
+                    k++;
+                }
+
+            }
+        }
+      /*  document.getElementById('u1').value = b;*/
+           /* alert(a.length);
+            alert(a)*/
+
+
+    }
+</script>
+<!--<script>
+    var dv = document.getElementById('tq'), cbs = dv.getElementsByTagName('input');
+    dv.onclick = function (e) {
+        e = e || window.event;
+        var o = e.target || e.srcElement;
+        if (o.type == 'checkbox') {
+            var vs = '';
+            for (var i = 0; i < cbs.length; i++)
+                if (cbs[i].checked) vs += ',' + cbs[i].value;
+            document.cookie = 'vs=' + vs.substring(1);//存储选中的checkbook的值
+        }
+    }
+    var m = /(^| |;)vs=([^;]+)/.exec(document.cookie);
+    if (m) {//cookie中有值，初始化勾选状态
+        var arr = m[2].split(',');
+        for(var j=0;j<arr.length;j++)
+            for(var i=0;i<cbs.length;i++)
+                if (cbs[i].value == arr[j]) { cbs[i].checked = true; break;}
+    }
+    alert(document.cookie);
+</script>-->
+<!--data table-->
+<script type="text/javascript" src="js/data-tables/jquery.dataTables.js"></script>
+<script type="text/javascript" src="js/data-tables/DT_bootstrap.js"></script>
+
+
+<!--script for editable table-->
+<script src="js/editable-table.js"></script>
+
+<!-- END JAVASCRIPTS -->
+<!--<script>
+    jQuery(document).ready(function() {
+        EditableTable.init();
+    });
+</script-->>
+
+</body>
+</html>
